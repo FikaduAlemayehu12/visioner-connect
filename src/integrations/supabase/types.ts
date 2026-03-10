@@ -14,7 +14,222 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      categories: {
+        Row: {
+          created_at: string
+          icon: string | null
+          id: string
+          name: string
+          parent_id: string | null
+          post_count: number
+        }
+        Insert: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          name: string
+          parent_id?: string | null
+          post_count?: number
+        }
+        Update: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          name?: string
+          parent_id?: string | null
+          post_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      post_images: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string
+          post_id: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url: string
+          post_id: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string
+          post_id?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_images_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          address: string | null
+          category_id: string | null
+          contact_phone: string | null
+          created_at: string
+          description: string | null
+          expires_at: string | null
+          id: string
+          is_featured: boolean
+          is_urgent: boolean
+          location: string | null
+          negotiable: boolean
+          price: number | null
+          status: Database["public"]["Enums"]["post_status"]
+          title: string
+          type: Database["public"]["Enums"]["post_type"]
+          updated_at: string
+          user_id: string
+          views: number
+        }
+        Insert: {
+          address?: string | null
+          category_id?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          is_featured?: boolean
+          is_urgent?: boolean
+          location?: string | null
+          negotiable?: boolean
+          price?: number | null
+          status?: Database["public"]["Enums"]["post_status"]
+          title: string
+          type?: Database["public"]["Enums"]["post_type"]
+          updated_at?: string
+          user_id: string
+          views?: number
+        }
+        Update: {
+          address?: string | null
+          category_id?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          description?: string | null
+          expires_at?: string | null
+          id?: string
+          is_featured?: boolean
+          is_urgent?: boolean
+          location?: string | null
+          negotiable?: boolean
+          price?: number | null
+          status?: Database["public"]["Enums"]["post_status"]
+          title?: string
+          type?: Database["public"]["Enums"]["post_type"]
+          updated_at?: string
+          user_id?: string
+          views?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          address: string | null
+          allow_chat_messages: boolean
+          avatar_url: string | null
+          business_name: string | null
+          business_type: string | null
+          business_verified: boolean
+          created_at: string
+          email: string | null
+          email_verified: boolean
+          full_name: string
+          id: string
+          license_number: string | null
+          location: string | null
+          phone: string | null
+          phone_verified: boolean
+          rating: number
+          show_address_after_booking: boolean
+          show_email_to_partners: boolean
+          show_phone_to_verified: boolean
+          tax_id: string | null
+          trade_count: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          allow_chat_messages?: boolean
+          avatar_url?: string | null
+          business_name?: string | null
+          business_type?: string | null
+          business_verified?: boolean
+          created_at?: string
+          email?: string | null
+          email_verified?: boolean
+          full_name?: string
+          id?: string
+          license_number?: string | null
+          location?: string | null
+          phone?: string | null
+          phone_verified?: boolean
+          rating?: number
+          show_address_after_booking?: boolean
+          show_email_to_partners?: boolean
+          show_phone_to_verified?: boolean
+          tax_id?: string | null
+          trade_count?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          allow_chat_messages?: boolean
+          avatar_url?: string | null
+          business_name?: string | null
+          business_type?: string | null
+          business_verified?: boolean
+          created_at?: string
+          email?: string | null
+          email_verified?: boolean
+          full_name?: string
+          id?: string
+          license_number?: string | null
+          location?: string | null
+          phone?: string | null
+          phone_verified?: boolean
+          rating?: number
+          show_address_after_booking?: boolean
+          show_email_to_partners?: boolean
+          show_phone_to_verified?: boolean
+          tax_id?: string | null
+          trade_count?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +238,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      post_status: "active" | "sold" | "expired" | "draft" | "pending"
+      post_type: "sell" | "buy" | "service_offer" | "service_need"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +366,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      post_status: ["active", "sold", "expired", "draft", "pending"],
+      post_type: ["sell", "buy", "service_offer", "service_need"],
+    },
   },
 } as const
