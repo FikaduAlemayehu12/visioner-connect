@@ -27,6 +27,8 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
             <Route path="/listing/:id" element={<ListingDetail />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/post/create" element={<CreatePost />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <BottomNav />
