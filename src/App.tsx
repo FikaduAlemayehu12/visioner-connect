@@ -9,6 +9,8 @@ import { BottomNav } from "@/components/BottomNav";
 import Index from "./pages/Index.tsx";
 import Login from "./pages/Login.tsx";
 import ListingDetail from "./pages/ListingDetail.tsx";
+import ProfilePage from "./pages/Profile.tsx";
+import CreatePost from "./pages/CreatePost.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
