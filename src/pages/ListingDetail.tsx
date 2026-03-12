@@ -40,7 +40,7 @@ export default function ListingDetail() {
     ? listing.images
     : ["https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop"];
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!user) {
       toast.error("Please sign in to send messages");
       navigate("/login");
@@ -50,9 +50,29 @@ export default function ListingDetail() {
       toast.error("Please enter a message");
       return;
     }
-    toast.success("Message sent to " + listing.seller_name);
+    
+    const convoId = await getOrCreateConversation(listing.id, listing.user_id, user.id);
+    if (!convoId) return;
+    
+    // Send first message
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { error } = await supabase.from("messages").insert({
+      conversation_id: convoId,
+      sender_id: user.id,
+      content: message.trim(),
+    });
+    
+    if (error) {
+      toast.error("Failed to send message");
+      return;
+    }
+    
+    await supabase.from("conversations").update({ last_message_at: new Date().toISOString() }).eq("id", convoId);
+    
+    toast.success("Message sent! Opening chat...");
     setMessage("");
     setShowMessageBox(false);
+    navigate("/chats");
   };
 
   const handleShowPhone = () => {
