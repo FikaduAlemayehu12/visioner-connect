@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 const filters = [
@@ -6,12 +5,14 @@ const filters = [
   { label: "Buy", value: "buy" },
   { label: "Sell", value: "sell" },
   { label: "Services", value: "services" },
-  { label: "Near You", value: "near" },
 ];
 
-export function FilterBar() {
-  const [active, setActive] = useState("all");
+interface FilterBarProps {
+  active: string;
+  onChange: (value: string) => void;
+}
 
+export function FilterBar({ active, onChange }: FilterBarProps) {
   return (
     <div className="flex items-center gap-2 overflow-x-auto pb-1">
       {filters.map((filter) => (
@@ -19,7 +20,7 @@ export function FilterBar() {
           key={filter.value}
           variant={active === filter.value ? "default" : "outline"}
           size="sm"
-          onClick={() => setActive(filter.value)}
+          onClick={() => onChange(filter.value)}
           className="shrink-0"
         >
           {filter.label}
