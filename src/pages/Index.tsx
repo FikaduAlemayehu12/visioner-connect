@@ -6,8 +6,8 @@ import { categories as mockCategories } from "@/lib/mockData";
 import { usePosts } from "@/hooks/usePosts";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, Loader2 } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
+import { ChevronRight, Loader2, Globe } from "lucide-react";
+import { useSearchParams, Link } from "react-router-dom";
 
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -68,8 +68,14 @@ const Index = () => {
                 Ethiopia's intelligent marketplace — powered by AI.
               </p>
             </div>
-            <div className="w-full md:max-w-sm">
+            <div className="w-full md:max-w-sm space-y-1.5">
               <SearchBar />
+              <Link
+                to={`/search/external${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ""}`}
+                className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Globe className="h-3 w-3" /> Search other marketplaces
+              </Link>
             </div>
           </div>
         </div>

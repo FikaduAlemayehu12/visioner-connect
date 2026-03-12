@@ -11,6 +11,8 @@ import Login from "./pages/Login.tsx";
 import ListingDetail from "./pages/ListingDetail.tsx";
 import ProfilePage from "./pages/Profile.tsx";
 import CreatePost from "./pages/CreatePost.tsx";
+import Chats from "./pages/Chats.tsx";
+import ExternalSearch from "./pages/ExternalSearch.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -29,6 +31,8 @@ const App = () => (
             <Route path="/listing/:id" element={<ListingDetail />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/post/create" element={<CreatePost />} />
+            <Route path="/chats" element={<Chats />} />
+            <Route path="/search/external" element={<ExternalSearch />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <BottomNav />
