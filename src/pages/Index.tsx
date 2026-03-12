@@ -6,8 +6,8 @@ import { categories as mockCategories } from "@/lib/mockData";
 import { usePosts } from "@/hooks/usePosts";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, Loader2 } from "lucide-react";
-import { useSearchParams } from "react-router-dom";
+import { ChevronRight, Loader2, Globe } from "lucide-react";
+import { useSearchParams, Link } from "react-router-dom";
 
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
