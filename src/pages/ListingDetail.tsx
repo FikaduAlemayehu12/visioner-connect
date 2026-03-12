@@ -1,9 +1,9 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { usePost, formatETB, timeAgo } from "@/hooks/usePosts";
 import { useAuth } from "@/hooks/useAuth";
+import { getOrCreateConversation } from "@/hooks/useChat";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { MapPin, Star, Eye, MessageSquare, Phone, Share2, Heart, ChevronLeft, Shield, Loader2, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
