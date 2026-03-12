@@ -68,8 +68,14 @@ const Index = () => {
                 Ethiopia's intelligent marketplace — powered by AI.
               </p>
             </div>
-            <div className="w-full md:max-w-sm">
+            <div className="w-full md:max-w-sm space-y-1.5">
               <SearchBar />
+              <Link
+                to={`/search/external${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ""}`}
+                className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Globe className="h-3 w-3" /> Search other marketplaces
+              </Link>
             </div>
           </div>
         </div>
