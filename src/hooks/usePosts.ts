@@ -63,7 +63,7 @@ export function usePosts({ category, search, type, page = 1, pageSize = 12 }: Us
 
       if (type && type !== "all") {
         if (type === "services") {
-          query = query.in("type", ["service_offer", "service_need"]);
+          query = query.in("type", ["service_offer", "service_need"] as const);
         } else {
           query = query.eq("type", type);
         }
