@@ -13,6 +13,7 @@ import ProfilePage from "./pages/Profile.tsx";
 import CreatePost from "./pages/CreatePost.tsx";
 import Chats from "./pages/Chats.tsx";
 import ExternalSearch from "./pages/ExternalSearch.tsx";
+import Favorites from "./pages/Favorites.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
