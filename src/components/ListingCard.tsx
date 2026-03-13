@@ -1,6 +1,8 @@
-import { MapPin, Star, Eye } from "lucide-react";
+import { MapPin, Star, Eye, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { type PostWithDetails, formatETB, timeAgo } from "@/hooks/usePosts";
+import { useAuth } from "@/hooks/useAuth";
+import { useFavorites, useToggleFavorite } from "@/hooks/useFavorites";
 
 interface ListingCardProps {
   listing: PostWithDetails;
@@ -8,6 +10,17 @@ interface ListingCardProps {
 
 export function ListingCard({ listing }: ListingCardProps) {
   const image = listing.images[0] || "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop";
+  const { user } = useAuth();
+  const { favoriteIds } = useFavorites();
+  const toggleFavorite = useToggleFavorite();
+  const isFavorited = favoriteIds.includes(listing.id);
+
+  const handleFavorite = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!user) return;
+    toggleFavorite.mutate({ postId: listing.id, isFavorited });
+  };
 
   return (
     <Link
@@ -32,6 +45,15 @@ export function ListingCard({ listing }: ListingCardProps) {
             <span className="rounded-sm bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">Wanted</span>
           )}
         </div>
+        {user && (
+          <button
+            onClick={handleFavorite}
+            className="absolute top-2 right-2 p-1.5 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background transition-colors"
+            aria-label={isFavorited ? "Remove from favorites" : "Add to favorites"}
+          >
+            <Heart className={`h-4 w-4 ${isFavorited ? "fill-destructive text-destructive" : "text-muted-foreground"}`} />
+          </button>
+        )}
       </div>
 
       <div className="p-3 space-y-2">
