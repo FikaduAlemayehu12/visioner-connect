@@ -47,7 +47,7 @@ export function usePosts({ category, search, type, page = 1, pageSize = 12 }: Us
         .select(`
           *,
           categories!posts_category_id_fkey(name, icon),
-          profiles!inner(full_name, business_verified, rating, trade_count, avatar_url, phone, email),
+          profiles!posts_user_id_profiles_fkey(full_name, business_verified, rating, trade_count, avatar_url, phone, email),
           post_images(image_url, sort_order)
         `, { count: "exact" })
         .eq("status", "active")
