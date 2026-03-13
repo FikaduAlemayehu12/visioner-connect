@@ -36,6 +36,8 @@ const App = () => (
             <Route path="/post/create" element={<CreatePost />} />
             <Route path="/chats" element={<Chats />} />
             <Route path="/search/external" element={<ExternalSearch />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/about" element={<About />} />
             <Route path="/favorites" element={<Favorites />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
