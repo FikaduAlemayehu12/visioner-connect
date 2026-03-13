@@ -13,6 +13,8 @@ import ProfilePage from "./pages/Profile.tsx";
 import CreatePost from "./pages/CreatePost.tsx";
 import Chats from "./pages/Chats.tsx";
 import ExternalSearch from "./pages/ExternalSearch.tsx";
+import HowItWorks from "./pages/HowItWorks.tsx";
+import About from "./pages/About.tsx";
 import Favorites from "./pages/Favorites.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
@@ -34,6 +36,8 @@ const App = () => (
             <Route path="/post/create" element={<CreatePost />} />
             <Route path="/chats" element={<Chats />} />
             <Route path="/search/external" element={<ExternalSearch />} />
+            <Route path="/how-it-works" element={<HowItWorks />} />
+            <Route path="/about" element={<About />} />
             <Route path="/favorites" element={<Favorites />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
