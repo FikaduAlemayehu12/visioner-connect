@@ -13,6 +13,8 @@ import ProfilePage from "./pages/Profile.tsx";
 import CreatePost from "./pages/CreatePost.tsx";
 import Chats from "./pages/Chats.tsx";
 import ExternalSearch from "./pages/ExternalSearch.tsx";
+import HowItWorks from "./pages/HowItWorks.tsx";
+import About from "./pages/About.tsx";
 import Favorites from "./pages/Favorites.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
