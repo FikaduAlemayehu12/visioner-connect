@@ -34,6 +34,7 @@ const App = () => (
             <Route path="/post/create" element={<CreatePost />} />
             <Route path="/chats" element={<Chats />} />
             <Route path="/search/external" element={<ExternalSearch />} />
+            <Route path="/favorites" element={<Favorites />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <BottomNav />
