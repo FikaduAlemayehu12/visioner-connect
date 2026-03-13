@@ -1,7 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
-import { MessageSquare, PlusCircle, User, Menu, X, LogOut } from "lucide-react";
+import { MessageSquare, PlusCircle, Heart, LogOut, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import { NotificationBell } from "@/components/NotificationBell";
 import { useState } from "react";
 
 const navLinks = [
@@ -37,9 +38,13 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-2 md:flex">
           {user ? (
             <>
+              <NotificationBell />
+              <Button variant="ghost" size="sm" asChild>
+                <Link to="/favorites"><Heart className="h-4 w-4" /> Favorites</Link>
+              </Button>
               <Button variant="outline" size="sm" asChild>
                 <Link to="/chats"><MessageSquare className="h-4 w-4" /> Chats</Link>
               </Button>
@@ -47,7 +52,7 @@ export function Navbar() {
                 <Link to="/post/create"><PlusCircle className="h-4 w-4" /> Post</Link>
               </Button>
               <Button variant="ghost" size="sm" onClick={signOut}>
-                <LogOut className="h-4 w-4" /> Sign Out
+                <LogOut className="h-4 w-4" />
               </Button>
             </>
           ) : (
