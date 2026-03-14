@@ -6,8 +6,14 @@ import { categories as mockCategories } from "@/lib/mockData";
 import { usePosts } from "@/hooks/usePosts";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, Loader2, Globe } from "lucide-react";
+import { ChevronRight, Loader2, Globe, Sparkles, TrendingUp, ArrowRight } from "lucide-react";
 import { useSearchParams, Link } from "react-router-dom";
+import { motion } from "framer-motion";
+
+const container = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { staggerChildren: 0.06 } },
+};
 
 const Index = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,7 +33,6 @@ const Index = () => {
       });
   }, []);
 
-  // Reset page when filters change
   useEffect(() => { setPage(1); }, [activeCategory, searchQuery, typeFilter]);
 
   const { data, isLoading, isFetching } = usePosts({
@@ -56,63 +61,90 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pb-20 md:pb-8">
-      <section className="border-b border-border bg-card">
-        <div className="container py-5 md:py-6">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="space-y-1 shrink-0">
-              <h1 className="text-xl md:text-2xl font-heading font-bold text-foreground">
-                Find what you need, <span className="text-primary">sell what you don't.</span>
+    <div className="min-h-screen bg-background pb-24 md:pb-8">
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b border-border">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.03] via-transparent to-secondary/[0.03]" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+        <div className="container relative py-8 md:py-12">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-3 shrink-0 max-w-lg"
+            >
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                <Sparkles className="h-3 w-3" /> AI-Powered Marketplace
+              </div>
+              <h1 className="text-2xl md:text-4xl font-heading font-black text-foreground leading-tight">
+                Find what you need,{" "}
+                <span className="gradient-text">sell what you don't.</span>
               </h1>
-              <p className="text-muted-foreground text-xs md:text-sm font-body">
-                Ethiopia's intelligent marketplace — powered by AI.
+              <p className="text-muted-foreground text-sm md:text-base font-body">
+                Ethiopia's smartest marketplace — search, chat, and trade with confidence.
               </p>
-            </div>
-            <div className="w-full md:max-w-sm space-y-1.5">
+            </motion.div>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="w-full md:max-w-md space-y-2"
+            >
               <SearchBar />
-              <Link
-                to={`/search/external${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ""}`}
-                className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Globe className="h-3 w-3" /> Search other marketplaces
-              </Link>
-            </div>
+              <div className="flex items-center gap-3">
+                <Link
+                  to={`/search/external${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ""}`}
+                  className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors group"
+                >
+                  <Globe className="h-3 w-3" /> Search other marketplaces
+                  <ArrowRight className="h-3 w-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                </Link>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      <div className="container py-5 space-y-6">
+      <div className="container py-6 space-y-8">
         {/* Categories */}
         <section>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-heading font-bold text-foreground">Categories</h2>
-            <Button variant="ghost" size="sm" className="text-muted-foreground text-xs h-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-heading font-bold text-foreground flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-primary" /> Categories
+            </h2>
+            <Button variant="ghost" size="sm" className="text-muted-foreground text-xs h-8 rounded-lg">
               View All <ChevronRight className="h-3.5 w-3.5" />
             </Button>
           </div>
-          <div className="grid grid-cols-4 md:grid-cols-8 gap-2">
+          <motion.div 
+            variants={container}
+            initial="hidden"
+            animate="show"
+            className="grid grid-cols-4 md:grid-cols-8 gap-2.5"
+          >
             {displayCategories.map((cat) => (
-              <button
+              <motion.button
                 key={cat.id}
+                variants={{ hidden: { opacity: 0, scale: 0.9 }, show: { opacity: 1, scale: 1 } }}
                 onClick={() => handleCategoryClick(cat.name)}
-                className={`flex flex-col items-center gap-1 rounded-lg border p-2.5 text-center transition-colors ${
+                className={`flex flex-col items-center gap-1.5 rounded-xl border p-3 text-center transition-all duration-200 hover:-translate-y-0.5 ${
                   activeCategory === cat.name
-                    ? "border-primary bg-primary/5 text-primary"
-                    : "border-border bg-card text-foreground hover:border-primary/30 hover:bg-muted"
+                    ? "border-primary bg-primary/5 text-primary shadow-md shadow-primary/10"
+                    : "border-border bg-card text-foreground hover:border-primary/30 hover:shadow-sm"
                 }`}
               >
-                <span className="text-xl">{cat.icon}</span>
-                <span className="text-[11px] font-medium leading-tight">{cat.name}</span>
-                <span className="text-[10px] text-muted-foreground">{cat.count} ads</span>
-              </button>
+                <span className="text-2xl">{cat.icon}</span>
+                <span className="text-[11px] font-semibold leading-tight">{cat.name}</span>
+                <span className="text-[10px] text-muted-foreground">{cat.count}</span>
+              </motion.button>
             ))}
-          </div>
+          </motion.div>
         </section>
 
         {/* Listings */}
         <section>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-heading font-bold text-foreground">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-heading font-bold text-foreground">
               {searchQuery
                 ? `Results for "${searchQuery}"`
                 : activeCategory
@@ -126,7 +158,7 @@ const Index = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-xs h-8 text-muted-foreground"
+                className="text-xs h-8 text-muted-foreground rounded-lg"
                 onClick={() => {
                   searchParams.delete("category");
                   searchParams.delete("q");
@@ -140,20 +172,27 @@ const Index = () => {
           <FilterBar active={typeFilter} onChange={setTypeFilter} />
 
           {isLoading ? (
-            <div className="flex justify-center py-16">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <div className="flex justify-center py-20">
+              <div className="text-center space-y-3">
+                <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
+                <p className="text-sm text-muted-foreground">Finding the best deals...</p>
+              </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
               {posts.length > 0 ? (
                 posts.map((post) => <ListingCard key={post.id} listing={post} />)
               ) : (
-                <div className="col-span-full text-center py-12 text-muted-foreground">
-                  <p className="text-sm">No listings found.</p>
+                <div className="col-span-full text-center py-16">
+                  <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4">
+                    <Sparkles className="h-7 w-7 text-muted-foreground" />
+                  </div>
+                  <p className="text-foreground font-heading font-semibold mb-1">No listings found</p>
+                  <p className="text-sm text-muted-foreground mb-4">Try adjusting your search or filters</p>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="mt-3"
+                    className="rounded-xl"
                     onClick={() => {
                       searchParams.delete("category");
                       searchParams.delete("q");
@@ -169,10 +208,11 @@ const Index = () => {
           )}
 
           {hasMore && (
-            <div className="flex justify-center mt-6">
+            <div className="flex justify-center mt-8">
               <Button
                 variant="outline"
                 size="lg"
+                className="rounded-xl px-8"
                 onClick={() => setPage((p) => p + 1)}
                 disabled={isFetching}
               >

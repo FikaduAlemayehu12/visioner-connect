@@ -3,9 +3,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { ListingCard } from "@/components/ListingCard";
 import { type PostWithDetails } from "@/hooks/usePosts";
-import { Heart } from "lucide-react";
+import { Heart, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 export default function Favorites() {
   const { user } = useAuth();
@@ -55,32 +56,47 @@ export default function Favorites() {
 
   if (!user) {
     return (
-      <div className="container py-12 text-center">
-        <Heart className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-        <h1 className="text-xl font-heading font-bold text-foreground mb-2">Sign in to view favorites</h1>
-        <Button asChild><Link to="/login">Sign In</Link></Button>
+      <div className="container py-20 text-center">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+          <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4">
+            <Heart className="h-7 w-7 text-muted-foreground" />
+          </div>
+          <h1 className="text-xl font-heading font-bold text-foreground mb-2">Sign in to view favorites</h1>
+          <p className="text-sm text-muted-foreground mb-4">Save listings you love and access them anytime.</p>
+          <Button className="rounded-xl gradient-bg border-0" asChild><Link to="/login">Sign In</Link></Button>
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="container py-6">
-      <h1 className="text-2xl font-heading font-bold text-foreground mb-6">My Favorites</h1>
-      {isLoading ? (
-        <p className="text-muted-foreground">Loading...</p>
-      ) : posts.length === 0 ? (
-        <div className="text-center py-12">
-          <Heart className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-          <p className="text-muted-foreground">No favorites yet. Browse listings to save items you like.</p>
-          <Button className="mt-4" asChild><Link to="/">Browse Listings</Link></Button>
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {posts.map((post) => (
-            <ListingCard key={post.id} listing={post} />
-          ))}
-        </div>
-      )}
+    <div className="min-h-screen bg-background pb-24 md:pb-8">
+      <div className="container py-6">
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
+          <h1 className="text-2xl font-heading font-bold text-foreground mb-1">My Favorites</h1>
+          <p className="text-sm text-muted-foreground mb-6">Items you've saved for later</p>
+        </motion.div>
+        {isLoading ? (
+          <div className="flex justify-center py-20">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        ) : posts.length === 0 ? (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-16">
+            <div className="w-16 h-16 rounded-2xl bg-muted flex items-center justify-center mx-auto mb-4">
+              <Heart className="h-7 w-7 text-muted-foreground" />
+            </div>
+            <p className="font-heading font-semibold text-foreground mb-1">No favorites yet</p>
+            <p className="text-sm text-muted-foreground mb-4">Browse listings and tap the heart to save items.</p>
+            <Button className="rounded-xl" asChild><Link to="/">Browse Listings</Link></Button>
+          </motion.div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {posts.map((post) => (
+              <ListingCard key={post.id} listing={post} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
