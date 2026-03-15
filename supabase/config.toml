@@ -1,1 +1,7 @@
 project_id = "ynhryiojmjolrtbsjptg"
+
+[functions.search-marketplaces]
+verify_jwt = false
+
+[functions.ai-assistant]
+verify_jwt = false

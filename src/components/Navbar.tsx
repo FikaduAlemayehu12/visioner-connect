@@ -3,6 +3,7 @@ import { MessageSquare, PlusCircle, Heart, LogOut, Menu, X, User } from "lucide-
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { NotificationBell } from "@/components/NotificationBell";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -19,15 +20,15 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 glass">
-      <div className="container flex h-16 items-center justify-between gap-4">
-        <Link to="/" className="flex items-center gap-2.5 font-heading text-xl font-bold text-foreground group">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl gradient-bg text-primary-foreground text-sm font-black shadow-md group-hover:shadow-lg transition-shadow">
+      <div className="container flex h-14 items-center justify-between gap-4">
+        <Link to="/" className="flex items-center gap-2 font-heading text-xl font-bold text-foreground group">
+          <span className="flex h-8 w-8 items-center justify-center rounded-xl gradient-bg text-primary-foreground text-sm font-black shadow-md group-hover:shadow-lg transition-shadow">
             V
           </span>
-          <span className="hidden sm:inline">Visioner AI</span>
+          <span className="hidden sm:inline text-base">Visioner AI</span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-0.5 md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.path}
@@ -49,20 +50,21 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-1.5 md:flex">
+        <div className="hidden items-center gap-1 md:flex">
+          <ThemeToggle />
           {user ? (
             <>
               <NotificationBell />
-              <Button variant="ghost" size="sm" className="gap-1.5" asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
                 <Link to="/favorites"><Heart className="h-4 w-4" /></Link>
               </Button>
-              <Button variant="ghost" size="sm" className="gap-1.5" asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
                 <Link to="/chats"><MessageSquare className="h-4 w-4" /></Link>
               </Button>
-              <Button size="sm" className="gap-1.5 rounded-xl gradient-bg border-0 shadow-md hover:shadow-lg transition-shadow" asChild>
-                <Link to="/post/create"><PlusCircle className="h-4 w-4" /> Post</Link>
+              <Button size="sm" className="gap-1.5 rounded-xl gradient-bg border-0 shadow-md hover:shadow-lg transition-shadow h-8 text-xs" asChild>
+                <Link to="/post/create"><PlusCircle className="h-3.5 w-3.5" /> Post</Link>
               </Button>
-              <Button variant="ghost" size="sm" className="gap-1.5" asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
                 <Link to="/profile"><User className="h-4 w-4" /></Link>
               </Button>
               <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground" onClick={signOut}>
@@ -71,23 +73,26 @@ export function Navbar() {
             </>
           ) : (
             <>
-              <Button variant="ghost" size="sm" asChild>
+              <Button variant="ghost" size="sm" className="h-8 text-xs" asChild>
                 <Link to="/login">Sign In</Link>
               </Button>
-              <Button size="sm" className="rounded-xl gradient-bg border-0 shadow-md" asChild>
+              <Button size="sm" className="rounded-xl gradient-bg border-0 shadow-md h-8 text-xs" asChild>
                 <Link to="/login">Get Started</Link>
               </Button>
             </>
           )}
         </div>
 
-        <button
-          className="md:hidden p-2 rounded-lg text-foreground hover:bg-muted/50 transition-colors"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
-        >
-          {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <div className="flex items-center gap-1 md:hidden">
+          <ThemeToggle />
+          <button
+            className="p-2 rounded-lg text-foreground hover:bg-muted/50 transition-colors"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
