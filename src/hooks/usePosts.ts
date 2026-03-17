@@ -169,6 +169,7 @@ export function usePost(id: string | undefined) {
         images: ((data as any).post_images || [])
           .sort((a: any, b: any) => a.sort_order - b.sort_order)
           .map((img: any) => img.image_url),
+        metadata: (data as any).metadata || null,
       };
     },
   });
