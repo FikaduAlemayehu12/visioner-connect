@@ -13,8 +13,9 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import {
-  ImagePlus, X, Loader2, MapPin, Phone, Tag, DollarSign, AlertTriangle, Star
+  ImagePlus, X, Loader2, MapPin, Phone, Tag, DollarSign, AlertTriangle
 } from "lucide-react";
+import { DynamicCategoryFields } from "@/components/DynamicCategoryFields";
 import type { Tables } from "@/integrations/supabase/types";
 
 type Category = Tables<"categories">;
@@ -50,12 +51,16 @@ export default function CreatePost() {
   const [description, setDescription] = useState("");
   const [postType, setPostType] = useState<string>("sell");
   const [categoryId, setCategoryId] = useState("");
+  const [subcategoryId, setSubcategoryId] = useState<string | null>(null);
   const [priceDisplay, setPriceDisplay] = useState("");
   const [negotiable, setNegotiable] = useState(false);
   const [isUrgent, setIsUrgent] = useState(false);
   const [locationVal, setLocationVal] = useState("");
   const [address, setAddress] = useState("");
   const [contactPhone, setContactPhone] = useState("");
+
+  // Dynamic category-specific metadata
+  const [metadata, setMetadata] = useState<Record<string, any>>({});
 
   // Images
   const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -71,6 +76,12 @@ export default function CreatePost() {
     }
     fetchCategories();
   }, [user, authLoading]);
+
+  // Reset metadata when category changes
+  useEffect(() => {
+    setMetadata({});
+    setSubcategoryId(null);
+  }, [categoryId]);
 
   const fetchCategories = async () => {
     const { data } = await supabase
@@ -111,7 +122,6 @@ export default function CreatePost() {
       reader.readAsDataURL(file);
     });
 
-    // Reset input so same file can be re-selected
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -176,7 +186,6 @@ export default function CreatePost() {
     try {
       const price = parseETBInput(priceDisplay);
 
-      // Create post
       const { data: post, error: postError } = await supabase
         .from("posts")
         .insert({
@@ -185,6 +194,7 @@ export default function CreatePost() {
           description: description.trim(),
           type: postType as any,
           category_id: categoryId,
+          subcategory_id: subcategoryId,
           price: price > 0 ? price : null,
           negotiable,
           is_urgent: isUrgent,
@@ -192,18 +202,17 @@ export default function CreatePost() {
           address: address.trim() || null,
           contact_phone: contactPhone.trim() || null,
           status: "active",
-        })
+          metadata: Object.keys(metadata).length > 0 ? metadata : null,
+        } as any)
         .select("id")
         .single();
 
       if (postError) throw postError;
 
-      // Upload images
       if (imageFiles.length > 0 && post) {
         setUploadingImages(true);
         const imageUrls = await uploadImages(post.id);
 
-        // Insert image records
         const imageRecords = imageUrls.map((url, i) => ({
           post_id: post.id,
           image_url: url,
@@ -353,6 +362,17 @@ export default function CreatePost() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Dynamic Category Fields */}
+          {categoryId && (
+            <DynamicCategoryFields
+              categoryId={categoryId}
+              values={metadata}
+              onChange={setMetadata}
+              onSubcategoryChange={setSubcategoryId}
+              errors={errors}
+            />
+          )}
 
           {/* Pricing */}
           <Card>
