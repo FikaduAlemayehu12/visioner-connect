@@ -108,6 +108,7 @@ export function usePosts({ category, search, type, page = 1, pageSize = 12 }: Us
           images: (p.post_images || [])
             .sort((a: any, b: any) => a.sort_order - b.sort_order)
             .map((img: any) => img.image_url),
+          metadata: (p as any).metadata || null,
         }));
 
       return { posts, total: count || 0 };
