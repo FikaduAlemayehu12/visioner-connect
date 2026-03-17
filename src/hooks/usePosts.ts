@@ -28,6 +28,7 @@ export interface PostWithDetails {
   seller_phone: string | null;
   seller_email: string | null;
   images: string[];
+  metadata: Record<string, any> | null;
 }
 
 interface UsePostsOptions {
