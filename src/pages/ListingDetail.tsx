@@ -197,6 +197,26 @@ export default function ListingDetail() {
                 </div>
               )}
 
+              {/* Metadata / Category-specific specs */}
+              {listing.metadata && Object.keys(listing.metadata).length > 0 && (
+                <div className="border-t border-border pt-5">
+                  <h2 className="text-base font-heading font-semibold text-foreground mb-3">Specifications</h2>
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    {Object.entries(listing.metadata).map(([key, value]) => {
+                      if (!value || (Array.isArray(value) && value.length === 0)) return null;
+                      const label = key.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+                      const display = Array.isArray(value) ? value.join(", ") : String(value);
+                      return (
+                        <div key={key} className="flex justify-between py-2 px-3 rounded-xl bg-muted/50">
+                          <span className="text-muted-foreground">{label}</span>
+                          <span className="font-medium text-foreground">{display}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               <div className="border-t border-border pt-5">
                 <h2 className="text-base font-heading font-semibold text-foreground mb-3">Details</h2>
                 <div className="grid grid-cols-2 gap-3 text-sm">
