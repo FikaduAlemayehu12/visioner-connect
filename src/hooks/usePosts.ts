@@ -28,6 +28,7 @@ export interface PostWithDetails {
   seller_phone: string | null;
   seller_email: string | null;
   images: string[];
+  metadata: Record<string, any> | null;
 }
 
 interface UsePostsOptions {
@@ -107,6 +108,7 @@ export function usePosts({ category, search, type, page = 1, pageSize = 12 }: Us
           images: (p.post_images || [])
             .sort((a: any, b: any) => a.sort_order - b.sort_order)
             .map((img: any) => img.image_url),
+          metadata: (p as any).metadata || null,
         }));
 
       return { posts, total: count || 0 };
@@ -167,6 +169,7 @@ export function usePost(id: string | undefined) {
         images: ((data as any).post_images || [])
           .sort((a: any, b: any) => a.sort_order - b.sort_order)
           .map((img: any) => img.image_url),
+        metadata: (data as any).metadata || null,
       };
     },
   });

@@ -49,6 +49,69 @@ export type Database = {
           },
         ]
       }
+      category_fields: {
+        Row: {
+          category_id: string
+          created_at: string
+          field_label: string
+          field_name: string
+          field_type: string
+          id: string
+          options: Json | null
+          placeholder: string | null
+          required: boolean
+          show_condition: Json | null
+          sort_order: number
+          subcategory_id: string | null
+          unit: string | null
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          field_label: string
+          field_name: string
+          field_type?: string
+          id?: string
+          options?: Json | null
+          placeholder?: string | null
+          required?: boolean
+          show_condition?: Json | null
+          sort_order?: number
+          subcategory_id?: string | null
+          unit?: string | null
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          field_label?: string
+          field_name?: string
+          field_type?: string
+          id?: string
+          options?: Json | null
+          placeholder?: string | null
+          required?: boolean
+          show_condition?: Json | null
+          sort_order?: number
+          subcategory_id?: string | null
+          unit?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "category_fields_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "category_fields_subcategory_id_fkey"
+            columns: ["subcategory_id"]
+            isOneToOne: false
+            referencedRelation: "subcategories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       conversations: {
         Row: {
           buyer_id: string
@@ -225,9 +288,11 @@ export type Database = {
           is_featured: boolean
           is_urgent: boolean
           location: string | null
+          metadata: Json | null
           negotiable: boolean
           price: number | null
           status: Database["public"]["Enums"]["post_status"]
+          subcategory_id: string | null
           title: string
           type: Database["public"]["Enums"]["post_type"]
           updated_at: string
@@ -245,9 +310,11 @@ export type Database = {
           is_featured?: boolean
           is_urgent?: boolean
           location?: string | null
+          metadata?: Json | null
           negotiable?: boolean
           price?: number | null
           status?: Database["public"]["Enums"]["post_status"]
+          subcategory_id?: string | null
           title: string
           type?: Database["public"]["Enums"]["post_type"]
           updated_at?: string
@@ -265,9 +332,11 @@ export type Database = {
           is_featured?: boolean
           is_urgent?: boolean
           location?: string | null
+          metadata?: Json | null
           negotiable?: boolean
           price?: number | null
           status?: Database["public"]["Enums"]["post_status"]
+          subcategory_id?: string | null
           title?: string
           type?: Database["public"]["Enums"]["post_type"]
           updated_at?: string
@@ -280,6 +349,13 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "posts_subcategory_id_fkey"
+            columns: ["subcategory_id"]
+            isOneToOne: false
+            referencedRelation: "subcategories"
             referencedColumns: ["id"]
           },
           {
@@ -395,6 +471,38 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      subcategories: {
+        Row: {
+          category_id: string
+          created_at: string
+          icon: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          category_id: string
+          created_at?: string
+          icon?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          category_id?: string
+          created_at?: string
+          icon?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subcategories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

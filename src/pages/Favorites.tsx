@@ -50,6 +50,7 @@ export default function Favorites() {
         seller_phone: p.profiles?.phone || null,
         seller_email: p.profiles?.email || null,
         images: (p.post_images || []).sort((a: any, b: any) => a.sort_order - b.sort_order).map((i: any) => i.image_url),
+        metadata: p.metadata || null,
       }));
     },
   });
